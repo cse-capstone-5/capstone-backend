@@ -4,14 +4,18 @@ const iconv = require('iconv-lite');
 const app = express()
 const port = 5000
 
+// word-cloud
 app.get('/word-cloud/keyword/:keyword', (req, res) => {
     console.log(req.params)
+
+    // 자식 프로세스 생성 test.py 실행하고 argv로 url에서 keyword 받은것 보냄
     const result = spawn('python', ['test.py', req.params.keyword])
 
+    // python 실행 결과 나오면 한글로 변환후 
     result.stdout.on('data', function (data) {
         let result = iconv.decode(data, 'euc-kr')
         console.log(result);
-        res.send(`wordcount ${JSON.stringify(req.params)} ${result}`)
+        res.send(`${result}`)
     });
 
     result.stderr.on('data', function (data) {
