@@ -12,14 +12,16 @@ app.get('/word-cloud/keyword/:keyword', (req, res) => {
     const result = spawn('conda', ['run', "-n", "pororo", "python", "test.py", req.params.keyword])
 
     // python 실행 결과 나오면 한글로 변환후 
+    //https://validming99.tistory.com/117 한글 깨짐 참고
     result.stdout.on('data', function (data) {
-        let result = iconv.decode(data, 'euc-kr')
+        let result = data.toString('utf8');
+        // let result = iconv.decode(data, 'euc-kr')
         console.log(result);
         res.send(`${result}`)
     });
 
     result.stderr.on('data', function (data) {
-        let result = iconv.decode(data, 'euc-kr')
+        let result = data.toString('utf8');
         console.log(result);
         res.status(500)
         res.send('Server Error!')
