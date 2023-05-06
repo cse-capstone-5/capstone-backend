@@ -4,35 +4,55 @@ const iconv = require('iconv-lite');
 const app = express()
 const port = 5000
 
-// word-cloud
-app.get('/word-cloud/keyword/:keyword', (req, res) => {
-    console.log(req.params)
+//캐시용
+let cache = {}
 
-    // 자식 프로세스 생성 test.py 실행하고 argv로 url에서 keyword 받은것 보냄
-    const result = spawn('conda', ['run', "-n", "pororo", "python", "test.py", req.params.keyword])
+function getData(keyword) {
+    // 자식 프로세스 생성 sentimeter.py 실행하고 argv로 keyword 보냄
+    const result = spawn('conda', ['run', "-n", "pororo", "python", "sentimeter.py", keyword])
 
     // python 실행 결과 나오면 한글로 변환후 
     //https://validming99.tistory.com/117 한글 깨짐 참고
     result.stdout.on('data', function (data) {
-        let result = data.toString('utf8');
+        let encoded = data.toString('utf8');
         // let result = iconv.decode(data, 'euc-kr')
-        console.log(result);
-        res.send(`${result}`)
+        console.log(encoded);
+        cache[keyword] = encoded
     });
 
     result.stderr.on('data', function (data) {
-        let result = data.toString('utf8');
-        console.log(result);
-        res.status(500)
-        res.send('Server Error!')
+        let encoded = data.toString('utf8');
+        console.log(encoded);
     });
 
+}
 
+// article
+app.get('/article/keyword/:keyword', (req, res) => {
+    if (!cache[req.params.keyword]) {
+        //캐시 안에 없다면 파이썬 돌림
+        getData(req.params.keyword)
+    }
+    res.send({ "result": cache[req.params.keyword]['article'] })
 })
 
-app.get('/line-chart/keyword/:keyword/interval/:timeInterval/start/:startDate/end/:endDate', (req, res) => {
-    console.log(req.params)
-    res.send(`line-chart ${JSON.stringify(req.params)}`)
+
+// word-cloud
+app.get('/word-cloud/keyword/:keyword', (req, res) => {
+    if (!cache[req.params.keyword]) {
+        //캐시 안에 없다면 파이썬 돌림
+        getData(req.params.keyword)
+    }
+    res.send({ "result": cache[req.params.keyword]['wordCloud'] })
+})
+
+// line-chart
+app.get('/line-chart/keyword/:keyword', (req, res) => {
+    if (!cache[req.params.keyword]) {
+        //캐시 안에 없다면 파이썬 돌림
+        getData(req.params.keyword)
+    }
+    res.send({ "result": cache[req.params.keyword]['lineChart'] })
 })
 
 app.listen(port, () => {
