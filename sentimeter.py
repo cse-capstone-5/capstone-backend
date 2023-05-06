@@ -16,6 +16,8 @@ from collections import Counter
 import time
 from wordcloud import WordCloud
 import json
+import warnings
+warnings.filterwarnings("ignore")
 
 # %%
 def get_sent(txt):
