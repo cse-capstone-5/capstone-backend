@@ -21,7 +21,7 @@ async function getData(keyword) {
     let encoded = data.toString('utf8');
     // let result = iconv.decode(data, 'euc-kr')
     console.log(encoded);
-    cache[keyword] = encoded
+    cache[keyword] = JSON.parse(encoded)
 
     result.stderr.on('data', function (data) {
         let encoded = data.toString('utf8');
