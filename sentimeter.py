@@ -144,8 +144,8 @@ def word_cloud(df):
     word = sum(df['split'],[])
     vocab = Counter(word)
     vocab = vocab.most_common(vocab_size)
-    wc = {"wordCloud" : dict(vocab)}
-    return json.dumps(wc)
+    wc = dict(vocab)
+    return wc
 
 # %%
 def get_article():
