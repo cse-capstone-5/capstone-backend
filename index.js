@@ -36,7 +36,7 @@ app.get('/keyword/:keyword', async (req, res) => {
         //캐시 안에 없다면 파이썬 돌림
         await getData(req.params.keyword)
     }
-    console.log(cache[req.params.keyword])
+    console.log("keyword " + Object.keys(cache))
     res.send(cache[req.params.keyword])
 })
 
@@ -46,7 +46,7 @@ app.get('/article/keyword/:keyword', async (req, res) => {
         //캐시 안에 없다면 파이썬 돌림
         await getData(req.params.keyword)
     }
-    console.log(cache[req.params.keyword])
+    console.log("article " + Object.keys(cache))
     res.send({ "result": cache[req.params.keyword]['article'] })
 })
 
@@ -57,7 +57,7 @@ app.get('/word-cloud/keyword/:keyword', async (req, res) => {
         //캐시 안에 없다면 파이썬 돌림
         await getData(req.params.keyword)
     }
-    console.log(cache[req.params.keyword])
+    console.log("word-cloud " + Object.keys(cache))
     res.send({ "result": cache[req.params.keyword]['wordCloud'] })
 })
 
@@ -67,7 +67,7 @@ app.get('/line-chart/keyword/:keyword', async (req, res) => {
         //캐시 안에 없다면 파이썬 돌림
         await getData(req.params.keyword)
     }
-    console.log(cache[req.params.keyword])
+    console.log("line-chart " + Object.keys(cache))
     res.send({ "result": cache[req.params.keyword]['lineChart'] })
 })
 
