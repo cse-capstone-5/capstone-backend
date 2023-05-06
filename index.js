@@ -7,7 +7,7 @@ const port = 5000
 //캐시용
 let cache = {}
 
-function getData(keyword) {
+async function getData(keyword) {
     // 자식 프로세스 생성 sentimeter.py 실행하고 argv로 keyword 보냄
     const result = spawn('conda', ['run', "-n", "pororo", "python", "sentimeter.py", keyword])
 
@@ -28,29 +28,29 @@ function getData(keyword) {
 }
 
 // article
-app.get('/article/keyword/:keyword', (req, res) => {
+app.get('/article/keyword/:keyword', async (req, res) => {
     if (!cache[req.params.keyword]) {
         //캐시 안에 없다면 파이썬 돌림
-        getData(req.params.keyword)
+        await getData(req.params.keyword)
     }
     res.send({ "result": cache[req.params.keyword]['article'] })
 })
 
 
 // word-cloud
-app.get('/word-cloud/keyword/:keyword', (req, res) => {
+app.get('/word-cloud/keyword/:keyword', async (req, res) => {
     if (!cache[req.params.keyword]) {
         //캐시 안에 없다면 파이썬 돌림
-        getData(req.params.keyword)
+        await getData(req.params.keyword)
     }
     res.send({ "result": cache[req.params.keyword]['wordCloud'] })
 })
 
 // line-chart
-app.get('/line-chart/keyword/:keyword', (req, res) => {
+app.get('/line-chart/keyword/:keyword', async (req, res) => {
     if (!cache[req.params.keyword]) {
         //캐시 안에 없다면 파이썬 돌림
-        getData(req.params.keyword)
+        await getData(req.params.keyword)
     }
     res.send({ "result": cache[req.params.keyword]['lineChart'] })
 })
