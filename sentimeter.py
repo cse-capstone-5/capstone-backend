@@ -210,8 +210,7 @@ async def crawl_sent_analysis(keyword):
     news_data['sent_val'] = news_data['title'].apply(get_sent)
     #print("done")
     
-    global sent_data
-    sent_data = news_data.resample(on='date',rule='D').sum()
+    sent_data['sent_val'] = news_data.resample(on='date',rule='D').sum()['sent_val']
     #sent_data = sent_data.fillna(0)
 
     for d in sent_data['sent_val'].index:
@@ -239,7 +238,7 @@ news_data = pd.DataFrame(columns=['title','url','date','sent_val'])
 sent_data = pd.DataFrame()
 #keyword = "전세"
 ds = str_to_date('20230401')
-de = str_to_date('20230501')
+de = str_to_date('20230402')
 
 # %%
 if __name__ == '__main__':
