@@ -71,6 +71,11 @@ app.get('/line-chart/keyword/:keyword', async (req, res) => {
     res.send({ "result": cache[req.params.keyword]['lineChart'] })
 })
 
+// 접속 확인용
+app.get('/', (req, res) => {
+    res.send('캡스톤 5조 백엔드 서버입니다.')
+})
+
 app.listen(port, () => {
     console.log(`app listening on port ${port}`)
 })
