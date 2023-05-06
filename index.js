@@ -30,6 +30,16 @@ async function getData(keyword) {
 
 }
 
+// keyword
+app.get('/keyword/:keyword', async (req, res) => {
+    if (!cache[req.params.keyword]) {
+        //캐시 안에 없다면 파이썬 돌림
+        await getData(req.params.keyword)
+    }
+    console.log(cache[req.params.keyword])
+    res.send(cache[req.params.keyword])
+})
+
 // article
 app.get('/article/keyword/:keyword', async (req, res) => {
     if (!cache[req.params.keyword]) {
