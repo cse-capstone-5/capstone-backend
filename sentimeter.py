@@ -193,7 +193,7 @@ def get_represent(df):
 def get_linechart():
     lineChart = []
     for row in sent_data.itertuples():
-        tmp = {"name":str(row[0]),"count":row[1]}
+        tmp = {"name":str(row[0]),"count":row[3]}
         lineChart.append(tmp)
     return lineChart
 
