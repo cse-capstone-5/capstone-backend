@@ -1,9 +1,10 @@
 const express = require('express')
 const { spawn } = require('child_process')
-const iconv = require('iconv-lite');
+const cors = require('cors')
 const app = express()
 const port = 5000
 
+app.use(cors({ origin: '*' }))
 //캐시용
 let cache = {}
 
