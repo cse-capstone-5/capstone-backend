@@ -238,7 +238,7 @@ news_data = pd.DataFrame(columns=['title','url','date','sent_val'])
 sent_data = pd.DataFrame()
 #keyword = "전세"
 ds = str_to_date('20230401')
-de = str_to_date('20230402')
+de = str_to_date('20230407')
 
 # %%
 if __name__ == '__main__':
